@@ -4,8 +4,8 @@ const dotenv = require("dotenv");
 const http = require("http");
 const socketio = require("socket.io");
 const Filter = require('bad-words');
-const { generateMessage, generateLocationMessages } = require("../public/utils/messages")
-const {addUser, removeUser, getUser,  getUsersInRoom} = require("../public/utils/users")
+const { generateMessage, generateLocationMessages } = require("../src/utils/messages")
+const {addUser, removeUser, getUser,  getUsersInRoom} = require("../src/utils/users")
 
 dotenv.config({ path: "src/configurations/config.env" });
 
@@ -16,18 +16,9 @@ const io = socketio(server);
 const publicDirectoryPath = path.join(__dirname, "../public");
 app.use(express.static(publicDirectoryPath));
 
-// let count = 0;
-
 io.on("connection", (socket) => {
   //socket is an object which contains information about connections
   console.log("New websocket connection");
-
-  // socket.emit("countUpdated", count); //to send event
-  // socket.on("increment", () => {
-  //   count++;
-  //   io.emit("countUpdated", count);
-  // });
-  
 
   socket.on("join", ({username, room}, callback)=>{
     const {error, user} = addUser({id: socket.id, username, room});
